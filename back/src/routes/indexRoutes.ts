@@ -1,13 +1,18 @@
 import { Router } from "express";
-import { createUser,getUsers,deleteUser } from "../controllers/usersControllers";
-
+import { getUsers,getUserById,registerUser,loginUser} from "../controllers/usersControllers";
+import { getAppointments, getAppointmentById, scheduleAppointment, cancelAppointment } from "../controllers/turnsControllers";
 const router: Router=Router();
 
-router.use("/users",(req,res)=>{
-    res.send("todo ok");
-})
-router.post("/users")
-router.delete("/users")
+router.get("/users",getUsers);
+router.get("/users/:id",getUserById);
+
+router.post("/users/register",registerUser);
+router.post("/users/login",loginUser);
+
+router.get("/appointments", getAppointments);
+router.get("/appointments/:id", getAppointmentById);
+router.post("/appointments/schedule", scheduleAppointment);
+router.put("/appointments/cancel", cancelAppointment);
 
 
 export default router;
