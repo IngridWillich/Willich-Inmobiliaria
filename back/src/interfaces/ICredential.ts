@@ -1,6 +1,6 @@
 interface ICredential{
     id:number,
     username:string,
-    password: string | number,
+    password: string ,
 }
 export default ICredential;
