@@ -1,39 +1,54 @@
+import { AppointmentModel, UserModel } from "../config/data-source";
 import IAppointment, { Status } from "../interfaces/IAppointments";
+import AppointmentDto from "../dto/AppointmentDto";
+import { Appointment } from "../entities/appointment";
 
 let appointments: IAppointment[] = [];
 
-export const getAllAppointments = (): IAppointment[] => {
-    return appointments;
-};
-export const getAppointmentById=(id:number):IAppointment | undefined=>{
-return appointments.find(appointment=> appointment.id===id);
+export const getAllAppointments = async () : Promise <Appointment[]>=>{
+    const allAppointments = await AppointmentModel.find();
+    return allAppointments;
+}
+export const getAppointmentById=async(appointmentId:number):Promise<Appointment>=>{
+    const foundAppointment = await AppointmentModel.findOne({
+        where: { id: appointmentId }
+    });
+
+    if (!foundAppointment) {
+        throw new Error('Appointment not found');
+    }
+
+    return foundAppointment;
+    
 }
 let contador:number=0;
-export const createAppointment = (userId: number, date: Date, time: string,status:Status): IAppointment | undefined => {
-    if (!userId) {
-        return undefined; 
+export const createAppointment = async(appointment:AppointmentDto,userId:number):Promise<Appointment> => {
+    const {time,date}=appointment;
+
+    const user=await UserModel.findOne({where: {id:userId}});
+    try {
+        if (!user) {
+            throw new Error("User not found");
+        } else {
+            const newAppointment = AppointmentModel.create({
+                date: date,
+                time: time,
+                user: user
+            });
+            await AppointmentModel.save(newAppointment);
+            return newAppointment;
+        }
+    } catch (error) {
+        // Manejo de errores
+        throw new Error("Error creating appointment");
     }
-    const appointmentId: number = ++contador;
-
-    const newAppointment: IAppointment = {
-        id: appointmentId,
-        date,
-        time,
-        userId,
-        status:Status.ACTIVE,
-        
-
-    };
-    appointments.push(newAppointment);
-    return newAppointment;
-
+    
 };
-export const cancelAppointment = (id: number): string => {
-    const appointmentIndex = appointments.findIndex(appointment => appointment.id === id);
-    if (appointmentIndex === -1) {
-        return "Appointment not found"; 
-    }//es decir, el turno no existe por lo que no se puede cancelar
-
-    appointments[appointmentIndex].status = Status.CANCELLED;
-    return "Cancelled";
-} //si lo encuentra, lo cancela
+export const cancelAppointment = async(id: number) => {
+    const appointment = await getAppointmentById(id);
+    if (appointment) {
+        appointment.status="cancelled";//si existe lo cancela
+        await AppointmentModel.save(appointment)
+        return appointment;
+    }
+    } 
