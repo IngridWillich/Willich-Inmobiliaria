@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import IUser from "../interfaces/IUsers";
-import { createUserService } from "../services/usersService";
+import { createUserService, deleteUserService } from "../services/usersService";
 
 let users:IUser[]=[];
 export const getUsers = async (req: Request, res: Response) => {
@@ -24,8 +24,17 @@ const credential=await createUserService(saveUser,credentials);
 res.status(201).json(credential)
 
 };
-
+/////////////////////////////////
 export const loginUser = async (req: Request, res: Response) => {
-    const { username, password } = req.body;
-};
-
+   
+ }
+ //////////////////////////
+ export const deleteUser = async (req: Request, res: Response) => {
+ try {
+   const userId: number = parseInt(req.params.id);
+  await deleteUserService(userId);
+  res.status(204).send();
+} catch (error) {    
+     res.status(500).json({ message: "Internal Server Error" });
+  }
+ };
