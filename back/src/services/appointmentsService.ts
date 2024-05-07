@@ -1,7 +1,7 @@
 import { AppointmentModel, UserModel } from "../config/data-source";
 import IAppointment, { Status } from "../interfaces/IAppointments";
 import AppointmentDto from "../dto/AppointmentDto";
-import { Appointment } from "../entities/appointment";
+import { Appointment } from "../entities/Appointment";
 
 let appointments: IAppointment[] = [];
 

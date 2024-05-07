@@ -1,7 +1,7 @@
 interface UserDto{
     name:string,
     email:string,
-    birthdate:Date,
-    nDni:number,
+    birthDate:Date,
+    dni:number,
 }
 export default UserDto;

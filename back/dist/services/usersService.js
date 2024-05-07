@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUserService = exports.createUserService = exports.getUserById = exports.getUsersService = void 0;
+const data_source_1 = require("../config/data-source");
 const credentialsService_1 = require("./credentialsService");
 let users = [{
         id: 0,
@@ -21,29 +22,37 @@ let users = [{
     }];
 let id = 1;
 const getUsersService = () => __awaiter(void 0, void 0, void 0, function* () {
-    return users;
+    const users = yield data_source_1.UserModel.find({ relations: ["appointments"] });
+    return users.map(user => ({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        birthdate: user.birthDate,
+        nDni: user.dni,
+        credentialId: user.credentials.id
+    }));
 });
 exports.getUsersService = getUsersService;
-const getUserById = (id) => {
-    return users.find(user => user.id === id);
-};
+const getUserById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const Founded = yield data_source_1.UserModel.findOneBy({ id });
+    if (Founded) {
+        return Founded;
+    }
+});
 exports.getUserById = getUserById;
 const createUserService = (newUser, credentials) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("service funciona");
     const { name, email, birthdate, nDni } = newUser;
     const { username, password } = credentials;
     const newCredential = yield (0, credentialsService_1.createCredentials)(username, password);
-    const newUsers = {
-        id,
+    const newUserEntity = data_source_1.UserModel.create({
         name,
         email,
-        birthdate,
-        nDni,
-        credentialId: newCredential
-    };
-    id++;
-    users.push(newUsers);
-    return newUsers;
+        birthDate: birthdate,
+        dni: nDni,
+        credentials: { id: newCredential }
+    });
+    yield data_source_1.UserModel.save(newUser);
+    return newUserEntity;
 });
 exports.createUserService = createUserService;
 const deleteUserService = (id) => __awaiter(void 0, void 0, void 0, function* () {

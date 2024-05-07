@@ -1,15 +1,15 @@
 import { DataSource } from "typeorm";
 import { User } from "../entities/User";
 import { Credentials } from "../entities/Credentials";
-import { Appointment } from "../entities/appointment";
+import { Appointment } from "../entities/Appointment";
 
 export const AppDataSource = new DataSource({
     type: "postgres",
     host: "localhost",
     port: 5432,
     username: "postgres",
-    password: "",
-    database: "Turnos",
+    password: "mentagringa",
+    database: "turnos",
     //dropSchema: true,
     synchronize: true,
     logging: ["error"],

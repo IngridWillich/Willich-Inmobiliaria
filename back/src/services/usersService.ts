@@ -34,15 +34,15 @@ export const getUserById = async(id: number):Promise<User|undefined> => {
 };
 
 export const createUserService=async(newUser:UserDto,credentials:credentialsDto):Promise<User>=>{
-    const {name,email,birthdate,nDni}=newUser
+    const {name,email,birthDate,dni}=newUser
     const {username,password}=credentials
 
     const newCredential=await createCredentials(username,password)
     const newUserEntity=UserModel.create({
             name,
             email,
-            birthDate:birthdate,
-            dni:nDni,
+            birthDate:birthDate,
+            dni:dni,
             credentials:{id:newCredential}}
         )
         await UserModel.save(newUser);

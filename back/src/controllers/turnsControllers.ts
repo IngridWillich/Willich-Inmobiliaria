@@ -21,7 +21,7 @@ export const getAppointmentById = async (req: Request, res: Response) => {
 export const scheduleAppointment = async (req: Request, res: Response): Promise<void> => {
     try {
         const { date, time, status, userId } = req.body;
-        const newAppointment = await createAppointment(userId, date, time, status); 
+        const newAppointment = await createAppointment({date, time, status}, userId); 
         if (newAppointment) {
             res.status(200).json(newAppointment);
         } else {

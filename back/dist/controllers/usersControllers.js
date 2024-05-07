@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUser = exports.registerUser = exports.getUserById = exports.getUsers = void 0;
+exports.deleteUser = exports.loginUser = exports.registerUser = exports.getUserById = exports.getUsers = void 0;
 const usersService_1 = require("../services/usersService");
 let users = [];
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -36,7 +36,19 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     res.status(201).json(credential);
 });
 exports.registerUser = registerUser;
+/////////////////////////////////
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { username, password } = req.body;
 });
 exports.loginUser = loginUser;
+//////////////////////////
+const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = parseInt(req.params.id);
+        yield (0, usersService_1.deleteUserService)(userId);
+        res.status(204).send();
+    }
+    catch (error) {
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+exports.deleteUser = deleteUser;
