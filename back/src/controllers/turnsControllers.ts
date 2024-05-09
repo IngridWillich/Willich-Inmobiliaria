@@ -20,10 +20,10 @@ export const getAppointmentById = async (req: Request, res: Response) => {
 //CRONOGRAMA
 export const scheduleAppointment = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { date, time, status, userId } = req.body;
-        const newAppointment = await createAppointment({date, time, status}, userId); 
+        const { date, time,type, userId } = req.body;
+        const newAppointment = await createAppointment({date, time,type}, userId); 
         if (newAppointment) {
-            res.status(200).json(newAppointment);
+            res.status(201).json(newAppointment);
         } else {
             res.status(400).json({ message: "Error creating appointment" });
         }

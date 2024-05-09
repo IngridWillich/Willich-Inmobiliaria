@@ -1,6 +1,9 @@
+import TurnType from "../entities/Appointment";
+
 interface AppointmentDto {
     date: Date,
     time: string,
-    status: "active" | "cancelled"
+    type:TurnType
+    
 }
 export default AppointmentDto;

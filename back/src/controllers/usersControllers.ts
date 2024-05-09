@@ -5,13 +5,13 @@ import { validateCredentials } from "../services/credentialsService";
 
 let users:IUser[]=[];
 export const getUsers = async (req: Request, res: Response) => {
-    res.status(201).json(users);
+    res.status(200).json(users);
 };
 export const getUserById = async (req: Request, res: Response) => {
     const userId: number = parseInt(req.params.id);
     const user = users.find(user => user.id === userId);
     try{
-        res.status(204).json(user);
+        res.status(200).json(user);
     } catch {
         res.status(404).json({ message: "User not found" });
     }

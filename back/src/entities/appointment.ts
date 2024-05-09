@@ -1,6 +1,17 @@
 import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./User";
 
+enum TurnType {
+    VISITA_DE_PROPIEDAD = "Visita de propiedad",
+    TASACION = "Tasación",
+    ENTREGA_DE_LLAVES = "Entrega de llaves",
+    REUNION_CON_EL_AGENTE = "Reunión con el agente inmobiliario",
+    FIRMA_DE_CONTRATO = "Firma de contrato",
+    ASESORAMIENTO_FINANCIERO = "Asesoramiento financiero",
+    
+}
+export default TurnType
+
 @Entity({name: "appointments"})
 export class Appointment {
     @PrimaryGeneratedColumn()
@@ -11,6 +22,8 @@ export class Appointment {
     @Column()
     time: string
     
+    @Column({type:"enum"})
+    type:TurnType
 
     @Column({default: "active"})
     status: "active" | "cancelled"

@@ -1,7 +1,7 @@
 import { AppointmentModel, UserModel } from "../config/data-source";
 import IAppointment, { Status } from "../interfaces/IAppointments";
 import AppointmentDto from "../dto/AppointmentDto";
-import { Appointment } from "../entities/Appointment";
+import TurnType, { Appointment } from "../entities/Appointment";
 
 let appointments: IAppointment[] = [];
 
@@ -21,11 +21,18 @@ export const getAppointmentById=async(appointmentId:number):Promise<Appointment>
     return foundAppointment;
     
 }
+const isValidTurnType = (turnType: TurnType): boolean => {
+    return Object.values(TurnType).includes(turnType);
+};
 let contador:number=0;
 export const createAppointment = async(appointment:AppointmentDto,userId:number):Promise<Appointment> => {
-    const {time,date}=appointment;
+    const {time,date,type}=appointment;
 
     const user=await UserModel.findOne({where: {id:userId}});
+    
+    if (!isValidTurnType(type)) {
+        throw new Error("Tipo de turno inválido");
+    } 
     try {
         if (!user) {
             throw new Error("User not found");
@@ -33,6 +40,7 @@ export const createAppointment = async(appointment:AppointmentDto,userId:number)
             const newAppointment = AppointmentModel.create({
                 date: date,
                 time: time,
+                type: type,
                 user: user
             });
             await AppointmentModel.save(newAppointment);
@@ -42,7 +50,7 @@ export const createAppointment = async(appointment:AppointmentDto,userId:number)
         // Manejo de errores
         throw new Error("Error creating appointment");
     }
-    
+
 };
 export const cancelAppointment = async(id: number) => {
     const appointment = await getAppointmentById(id);

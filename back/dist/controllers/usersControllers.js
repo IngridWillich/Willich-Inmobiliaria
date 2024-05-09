@@ -9,18 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.loginUser = exports.registerUser = exports.getUserById = exports.getUsers = void 0;
+exports.loginUser = exports.registerUser = exports.getUserById = exports.getUsers = void 0;
 const usersService_1 = require("../services/usersService");
+const credentialsService_1 = require("../services/credentialsService");
 let users = [];
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.status(201).json(users);
+    res.status(200).json(users);
 });
 exports.getUsers = getUsers;
 const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = parseInt(req.params.id);
     const user = users.find(user => user.id === userId);
     try {
-        res.status(204).json(user);
+        res.status(200).json(user);
     }
     catch (_a) {
         res.status(404).json({ message: "User not found" });
@@ -29,26 +30,33 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getUserById = getUserById;
 const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("funciona");
-    const { username, password, name, birthdate, nDni, email } = req.body;
+    const { username, password, name, birthDate, dni, email } = req.body;
     const credentials = { username, password };
-    const saveUser = { name, email, birthdate, nDni };
+    const saveUser = { name, email, birthDate, dni };
     const credential = yield (0, usersService_1.createUserService)(saveUser, credentials);
     res.status(201).json(credential);
 });
 exports.registerUser = registerUser;
 /////////////////////////////////
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-});
-exports.loginUser = loginUser;
-//////////////////////////
-const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userId = parseInt(req.params.id);
-        yield (0, usersService_1.deleteUserService)(userId);
-        res.status(204).send();
+        const { username, password } = req.body;
+        const id = yield (0, credentialsService_1.validateCredentials)(username, password);
+        // Aquí puedes agregar la lógica adicional para el login según lo necesites.
+        // Por ejemplo, podrías generar un token de sesión y devolverlo como respuesta.
+        res.status(200).send("Login successful");
     }
     catch (error) {
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(400).send("Invalid credentials");
     }
 });
-exports.deleteUser = deleteUser;
+exports.loginUser = loginUser;
+//  export const deleteUser = async (req: Request, res: Response) => {
+//  try {
+//    const userId: number = parseInt(req.params.id);
+//   await deleteUserService(userId);
+//   res.status(204).send();
+// } catch (error) {    
+//      res.status(500).json({ message: "Internal Server Error" });
+//   }
+//  };

@@ -41,14 +41,14 @@ const getUserById = (id) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.getUserById = getUserById;
 const createUserService = (newUser, credentials) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, birthdate, nDni } = newUser;
+    const { name, email, birthDate, dni } = newUser;
     const { username, password } = credentials;
     const newCredential = yield (0, credentialsService_1.createCredentials)(username, password);
     const newUserEntity = data_source_1.UserModel.create({
         name,
         email,
-        birthDate: birthdate,
-        dni: nDni,
+        birthDate: birthDate,
+        dni: dni,
         credentials: { id: newCredential }
     });
     yield data_source_1.UserModel.save(newUser);

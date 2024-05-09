@@ -5,13 +5,14 @@ const typeorm_1 = require("typeorm");
 const User_1 = require("../entities/User");
 const Credentials_1 = require("../entities/Credentials");
 const Appointment_1 = require("../entities/Appointment");
+const envs_1 = require("./envs");
 exports.AppDataSource = new typeorm_1.DataSource({
     type: "postgres",
-    host: "localhost",
-    port: 5432,
-    username: "postgres",
-    password: "mentagringa",
-    database: "turnos",
+    host: envs_1.DB_HOST,
+    port: envs_1.DB_PORT,
+    username: envs_1.DB_USERNAME,
+    password: envs_1.DB_PASSWORD,
+    database: envs_1.DB_NAME,
     //dropSchema: true,
     synchronize: true,
     logging: ["error"],
