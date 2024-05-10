@@ -3,6 +3,7 @@ import { User } from "./User";
 
 enum TurnType {
     VISITA_DE_PROPIEDAD = "Visita de propiedad",
+    VISITA_DE_LOTEO="Visita de loteo",
     TASACION = "Tasación",
     ENTREGA_DE_LLAVES = "Entrega de llaves",
     REUNION_CON_EL_AGENTE = "Reunión con el agente inmobiliario",

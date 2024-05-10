@@ -31,7 +31,7 @@ export const createAppointment = async(appointment:AppointmentDto,userId:number)
     const user=await UserModel.findOne({where: {id:userId}});
     
     if (!isValidTurnType(type)) {
-        throw new Error("Tipo de turno inválido");
+        throw new Error("invalid shift type");
     } 
     try {
         if (!user) {
