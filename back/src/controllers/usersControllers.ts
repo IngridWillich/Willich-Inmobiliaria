@@ -4,8 +4,9 @@ import { createUserService, deleteUserService } from "../services/usersService";
 import { validateCredentials } from "../services/credentialsService";
 
 let users:IUser[]=[];
-export const getUsers = async (req: Request, res: Response) => {
-    res.status(200).json(users);
+export const getUsers =  (req: Request, res: Response) => {
+    console.log("estoy en get users")
+    res.status(200).send(users);
 };
 export const getUserById = async (req: Request, res: Response) => {
     const userId: number = parseInt(req.params.id);
@@ -37,12 +38,3 @@ export const loginUser = async (req: Request, res: Response) => {
         res.status(400).send("Invalid credentials");
     }
 }
-//  export const deleteUser = async (req: Request, res: Response) => {
-//  try {
-//    const userId: number = parseInt(req.params.id);
-//   await deleteUserService(userId);
-//   res.status(204).send();
-// } catch (error) {    
-//      res.status(500).json({ message: "Internal Server Error" });
-//   }
-//  };

@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import  IAppointment, { Status } from "../interfaces/IAppointments";
-import { createAppointment } from "../services/appointmentsService";
+import { createAppointment, getAllAppointments } from "../services/appointmentsService";
 
 let appointments: IAppointment[] = [];
 
-export const getAppointments = async (req: Request, res: Response) => {
-    res.status(200).json(appointments);
+export const getAppointments = async (req: Request, res: Response):Promise<void> => {
+    console.log("hasta aca va")
+    const appointments=await getAllAppointments()
+    res.status(200).send("appointments");
 };
 
 export const getAppointmentById = async (req: Request, res: Response) => {
@@ -48,14 +50,3 @@ export const cancelAppointment = async (req: Request, res: Response) => {
     }
 };
 
-
-// export const cancelAppointment = async (req: Request, res: Response)=> {
-//         const appointmentId: number = parseInt(req.params.id);
-//         const isCancelled = appointments.find(appointment=> appointment.id===appointmentId)
-//         if (isCancelled) {
-//             res.status(200).json({ message: "Appointment cancelled successfully" });
-//         } else {
-//             res.status(404).json({ message: "Appointment not found" });
-//         }
-    
-// };

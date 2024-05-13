@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { getUsers,getUserById,registerUser,loginUser} from "../controllers/usersControllers";
-import { ValidateLogin, ValidateRegistration } from "../middlewares/middlewares";
+ import { ValidateLogin, ValidateRegistration } from "../middlewares/middlewares";
 
-const UserRouter: Router=Router();
-
-UserRouter.get("/",getUsers);
+const UserRouter=Router();
+console.log("hola")
+UserRouter.get("/users",getUsers);
 UserRouter.get("/:id",getUserById);
 
 UserRouter.post("/register",ValidateRegistration,registerUser);
