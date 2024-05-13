@@ -1,0 +1,30 @@
+ .turnoContainer {
+        display:flex;
+        align-items: left;
+        justify-content: space-between;
+        background-color: #555555;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        box-shadow: 10px 10px 10px rgba(2, 0, 0, 0.253);
+        border-radius: 1em;
+        
+        
+    }
+.turno_item{
+    color:white;
+    font-family:'Courier New', Courier, monospace;
+}
+h4{
+    margin-left: 50px;
+
+}
+.button{
+    color:white;
+    background-color: rgb(219, 64, 64);
+    margin-left: 20px;
+    font-size: 0.9rem; 
+    padding: 4px 8px; 
+    border-radius: 5px;
+
+}

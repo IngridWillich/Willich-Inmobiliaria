@@ -23,8 +23,11 @@ export class Appointment {
     @Column()
     time: string
     
-    @Column({type:"enum"})
-    type:TurnType
+    @Column({
+        type: "enum",
+        enum: TurnType 
+    })
+    type: TurnType;
 
     @Column({default: "active"})
     status: "active" | "cancelled"
