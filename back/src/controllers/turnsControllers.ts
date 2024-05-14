@@ -7,7 +7,7 @@ let appointments: IAppointment[] = [];
 export const getAppointments = async (req: Request, res: Response):Promise<void> => {
     console.log("hasta aca va")
     const appointments=await getAllAppointments()
-    res.status(200).send("appointments");
+    res.status(200).json(appointments);
 };
 
 export const getAppointmentById = async (req: Request, res: Response) => {
@@ -22,8 +22,8 @@ export const getAppointmentById = async (req: Request, res: Response) => {
 //CRONOGRAMA
 export const scheduleAppointment = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { date, time,type, userId } = req.body;
-        const newAppointment = await createAppointment({date, time,type}, userId); 
+        const { date, time,type,status, userId } = req.body;
+        const newAppointment = await createAppointment({ date, time, type,status}, parseInt(userId)); //parseInt(userId); 
         if (newAppointment) {
             res.status(201).json(newAppointment);
         } else {

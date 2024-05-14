@@ -1,38 +1,42 @@
 import { Request, Response } from "express";
 import IUser from "../interfaces/IUsers";
-import { createUserService, deleteUserService } from "../services/usersService";
+import { createUserService,  getUsersService } from "../services/usersService";
 import { validateCredentials } from "../services/credentialsService";
-
+import { User } from "../entities/User";
 let users:IUser[]=[];
-export const getUsers =  (req: Request, res: Response) => {
-    console.log("estoy en get users")
-    res.status(200).send(users);
+export const getUsers = async (req: Request, res: Response):Promise<void>=>{
+    // res.status(200).send("get users")
+    try {
+        const users = await getUsersService() 
+        res.status(200).json(users)
+    } catch (error:any) {
+        res.status(500).json({message: error.message})
+    }
 };
-export const getUserById = async (req: Request, res: Response) => {
+export const getUserById = async (req: Request, res: Response): Promise<void> => {
     const userId: number = parseInt(req.params.id);
     const user = users.find(user => user.id === userId);
-    try{
+    if (user) {
         res.status(200).json(user);
-    } catch {
+    } else {
         res.status(404).json({ message: "User not found" });
     }
 };
 export const registerUser=async(req:Request,res:Response)=>{
     console.log("funciona")
     const { username, password,name, birthDate,dni,email } = req.body;
+    const user={name,email,birthDate,dni} //agregue ahora
     const credentials={username,password}
-    const saveUser={name,email,birthDate,dni}
-const credential=await createUserService(saveUser,credentials);
-res.status(201).json(credential)
-
+    // const saveUser={name,email,birthDate,dni} comento ahora
+const newUser:User=await createUserService(user,credentials);
+res.status(201).json(newUser)
+//aca tambien
 };
 /////////////////////////////////
 export const loginUser = async (req: Request, res: Response) => {
     try {
         const { username, password } = req.body;
-        const id = await validateCredentials(username, password);
-        // Aquí puedes agregar la lógica adicional para el login según lo necesites.
-        // Por ejemplo, podrías generar un token de sesión y devolverlo como respuesta.
+        const loginUser= await validateCredentials(username, password);
         res.status(200).send("Login successful");
     } catch (error) {
         res.status(400).send("Invalid credentials");

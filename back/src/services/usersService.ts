@@ -15,17 +15,12 @@ let users: IUser[]=[{
     credentialId:1,
     }]  
 let id:number=1;
-export const getUsersService = async (): Promise<IUser[]> => {
-    const users:User[]=await UserModel.find({relations:["appointments"]})
-    return users.map(user => ({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        birthdate: user.birthDate,
-        nDni: user.dni, 
-        credentialId: user.credentials.id
-}));
-} 
+export const getUsersService = async (): Promise<User[]> => {
+    // const users:User[]=await UserModel.find({relations:["appointments"]})
+    return await UserModel.find()
+}
+
+// } 
 export const getUserById = async(id: number):Promise<User|undefined> => {
     const Founded=await UserModel.findOneBy({id});
     if(Founded){
@@ -38,20 +33,20 @@ export const createUserService=async(newUser:UserDto,credentials:credentialsDto)
     const {username,password}=credentials
 
     const newCredential=await createCredentials(username,password)
-    const newUserEntity=UserModel.create({
+    const userCreated=UserModel.create({
             name,
             email,
             birthDate:birthDate,
             dni:dni,
             credentials:{id:newCredential}}
         )
-        await UserModel.save(newUser);
-        return newUserEntity;
+        await UserModel.save(userCreated);
+        return userCreated;//aca estaba retornando newUserEntity
     } 
     
 
-export const deleteUserService=async(id:number):Promise<void>=>{
-users=users.filter((user:IUser)=>{
-    return user.id !==id
-});
-}
+// export const deleteUserService=async(id:number):Promise<void>=>{
+// users=users.filter((user:IUser)=>{
+//     return user.id !==id
+// });
+// }

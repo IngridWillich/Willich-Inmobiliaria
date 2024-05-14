@@ -12,6 +12,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Appointment = void 0;
 const typeorm_1 = require("typeorm");
 const User_1 = require("./User");
+var TurnType;
+(function (TurnType) {
+    TurnType["VISITA_DE_PROPIEDAD"] = "Visita de propiedad";
+    TurnType["VISITA_DE_LOTEO"] = "Visita de loteo";
+    TurnType["TASACION"] = "Tasaci\u00F3n";
+    TurnType["ENTREGA_DE_LLAVES"] = "Entrega de llaves";
+    TurnType["REUNION_CON_EL_AGENTE"] = "Reuni\u00F3n con el agente inmobiliario";
+    TurnType["FIRMA_DE_CONTRATO"] = "Firma de contrato";
+    TurnType["ASESORAMIENTO_FINANCIERO"] = "Asesoramiento financiero";
+})(TurnType || (TurnType = {}));
+exports.default = TurnType;
 let Appointment = class Appointment {
 };
 exports.Appointment = Appointment;
@@ -27,6 +38,13 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Appointment.prototype, "time", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        type: "enum",
+        enum: TurnType
+    }),
+    __metadata("design:type", String)
+], Appointment.prototype, "type", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: "active" }),
     __metadata("design:type", String)

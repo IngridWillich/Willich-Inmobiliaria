@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserService = exports.createUserService = exports.getUserById = exports.getUsersService = void 0;
+exports.createUserService = exports.getUserById = exports.getUsersService = void 0;
 const data_source_1 = require("../config/data-source");
 const credentialsService_1 = require("./credentialsService");
 let users = [{
@@ -33,6 +33,17 @@ const getUsersService = () => __awaiter(void 0, void 0, void 0, function* () {
     }));
 });
 exports.getUsersService = getUsersService;
+// export const getUsersService = async () :Promise<User[]> =>{
+//     try {
+//         //! SIN REPOSITORIO
+//       //  const users = await AppDataSource.manager.find(User) //* AppDataSource GENERO LA CONEXION PARA BUSCAR LOS USUARIOS - CON MANAGER ACCEDO A TODAS LAS TABLAS
+//         //! CON REPOSITORIO
+//         const users = await UserModel.find({relations: ["credential", "appointments"]}) //* TRAEME TODOS LOS USUARIOS Y SUS RELACIONES
+//         return users
+//     } catch (error:any) {
+//         throw new Error(error)
+//     }
+// } 
 const getUserById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const Founded = yield data_source_1.UserModel.findOneBy({ id });
     if (Founded) {
@@ -44,20 +55,19 @@ const createUserService = (newUser, credentials) => __awaiter(void 0, void 0, vo
     const { name, email, birthDate, dni } = newUser;
     const { username, password } = credentials;
     const newCredential = yield (0, credentialsService_1.createCredentials)(username, password);
-    const newUserEntity = data_source_1.UserModel.create({
+    const userCreated = data_source_1.UserModel.create({
         name,
         email,
         birthDate: birthDate,
         dni: dni,
         credentials: { id: newCredential }
     });
-    yield data_source_1.UserModel.save(newUser);
-    return newUserEntity;
+    yield data_source_1.UserModel.save(userCreated);
+    return userCreated; //aca estaba retornando newUserEntity
 });
 exports.createUserService = createUserService;
-const deleteUserService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    users = users.filter((user) => {
-        return user.id !== id;
-    });
-});
-exports.deleteUserService = deleteUserService;
+// export const deleteUserService=async(id:number):Promise<void>=>{
+// users=users.filter((user:IUser)=>{
+//     return user.id !==id
+// });
+// }

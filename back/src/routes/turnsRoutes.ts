@@ -4,9 +4,7 @@ import { getAppointments, getAppointmentById, scheduleAppointment, cancelAppoint
 import { error } from "console";
 const AppointmentRouter: Router=Router();
 console.log("routes")
-AppointmentRouter.get("/", (req,res)=>{
-res.status(200).json({message:"respondiendo"})
-});
+AppointmentRouter.get("/", getAppointments);
 AppointmentRouter.get("/:id", getAppointmentById);
 AppointmentRouter.post("/schedule", scheduleAppointment);
 AppointmentRouter.put("/cancel/:id", cancelAppointment);

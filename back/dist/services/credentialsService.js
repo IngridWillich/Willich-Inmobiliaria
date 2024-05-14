@@ -11,8 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateCredentials = exports.createCredentials = void 0;
 const data_source_1 = require("../config/data-source");
+let id = 1;
 let credentials = [];
-let id = 0;
 const createCredentials = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
     const newCredentials = data_source_1.CredentialsModel.create({ username, password });
     yield data_source_1.CredentialsModel.save(newCredentials);

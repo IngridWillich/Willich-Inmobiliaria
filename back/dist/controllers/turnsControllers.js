@@ -14,6 +14,8 @@ const IAppointments_1 = require("../interfaces/IAppointments");
 const appointmentsService_1 = require("../services/appointmentsService");
 let appointments = [];
 const getAppointments = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("hasta aca va");
+    const appointments = yield (0, appointmentsService_1.getAllAppointments)();
     res.status(200).json(appointments);
 });
 exports.getAppointments = getAppointments;
@@ -31,10 +33,10 @@ exports.getAppointmentById = getAppointmentById;
 //CRONOGRAMA
 const scheduleAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { date, time, status, userId } = req.body;
-        const newAppointment = yield (0, appointmentsService_1.createAppointment)({ date, time, status }, userId);
+        const { date, time, type, status, userId } = req.body;
+        const newAppointment = yield (0, appointmentsService_1.createAppointment)({ date, time, type, status }, parseInt(userId)); //parseInt(userId); 
         if (newAppointment) {
-            res.status(200).json(newAppointment);
+            res.status(201).json(newAppointment);
         }
         else {
             res.status(400).json({ message: "Error creating appointment" });
@@ -62,12 +64,3 @@ const cancelAppointment = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.cancelAppointment = cancelAppointment;
-// export const cancelAppointment = async (req: Request, res: Response)=> {
-//         const appointmentId: number = parseInt(req.params.id);
-//         const isCancelled = appointments.find(appointment=> appointment.id===appointmentId)
-//         if (isCancelled) {
-//             res.status(200).json({ message: "Appointment cancelled successfully" });
-//         } else {
-//             res.status(404).json({ message: "Appointment not found" });
-//         }
-// };
