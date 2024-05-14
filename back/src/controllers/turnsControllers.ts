@@ -5,7 +5,6 @@ import { createAppointment, getAllAppointments } from "../services/appointmentsS
 let appointments: IAppointment[] = [];
 
 export const getAppointments = async (req: Request, res: Response):Promise<void> => {
-    console.log("hasta aca va")
     const appointments=await getAllAppointments()
     res.status(200).json(appointments);
 };

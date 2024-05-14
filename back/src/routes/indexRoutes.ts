@@ -6,7 +6,6 @@ const router: Router=Router();
 
 
 router.use("/users",UserRouter),//bien
-router.use("/",(req,res)=>{res.send("hola")})
 router.use("/appointments",AppointmentRouter);
 
 export default router; 
