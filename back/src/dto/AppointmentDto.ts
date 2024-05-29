@@ -1,9 +1,12 @@
 import TurnType from "../entities/Appointment";
-
+export enum Status{
+    ACTIVE = "ACTIVE",
+    CANCELED = "CANCELED"
+}
 interface AppointmentDto {
+    userId: number,
     date: Date,
     time: string,
-    status:"active" | "cancelled",//agregue esto
     type:TurnType
     
 }

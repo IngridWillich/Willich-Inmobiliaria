@@ -6,7 +6,7 @@ const AppointmentRouter: Router=Router();
 console.log("routes")
 AppointmentRouter.get("/", getAppointments);
 AppointmentRouter.get("/:id", getAppointmentById);
-AppointmentRouter.post("/schedule", scheduleAppointment);
+AppointmentRouter.post("/schedule", scheduleAppointment);// create
 AppointmentRouter.put("/cancel/:id", cancelAppointment);
 
 

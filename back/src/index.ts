@@ -20,35 +20,16 @@
 //     .catch((error) => console.log(error));
 
 
-// server.ts
-// import express from 'express';
-// import cors from 'cors';
-// import morgan from 'morgan';
-// import server from './server';
-// import { AppDataSource } from './config/data-source';
-//  import { PORT, HOST, PROTO } from "./config/envs";
-
-// const app = express();
-
-
-// // Middleware para permitir solicitudes desde cualquier origen (CORS)
-// app.use(cors());
-
-// // Middleware para registrar solicitudes HTTP (Morgan)
-// app.use(morgan('dev'));
-
-// // Middleware para analizar el cuerpo de las solicitudes en formato JSON
-// app.use(express.json());
-
 // // Inicializar la aplicación
 import express, { Request, Response } from 'express';
+import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
 import { AppDataSource } from './config/data-source';
 import router from './routes/indexRoutes';
-
+ dotenv.config();
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3001;
 
 // Middleware para permitir solicitudes desde cualquier origen (CORS)
 app.use(cors());

@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./User";
-
+import { Status } from "../dto/AppointmentDto";
 enum TurnType {
     VISITA_DE_PROPIEDAD = "Visita de propiedad",
     VISITA_DE_LOTEO="Visita de loteo",
@@ -29,8 +29,8 @@ export class Appointment {
     })
     type: TurnType;
 
-    @Column({default: "active"})
-    status: "active" | "cancelled"
+    @Column({type: "enum", enum: Status, default: Status.ACTIVE})
+    status: Status
 
     @ManyToOne(() => User, user => user.appointments)
     user: User

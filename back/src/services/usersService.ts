@@ -1,4 +1,4 @@
-import { UserModel } from "../config/data-source";
+import { AppDataSource, UserModel } from "../config/data-source";
 import UserDto from "../dto/UserDto";
 import credentialsDto from "../dto/credentialsDto";
 import { User } from "../entities/User";
@@ -21,28 +21,34 @@ export const getUsersService = async (): Promise<User[]> => {
 }
 
 // } 
-export const getUserById = async(id: number):Promise<User|undefined> => {
-    const Founded=await UserModel.findOneBy({id});
-    if(Founded){
-        return Founded
+export const getUserByIdService = async(id: number):Promise<User|null> => {
+    try {
+        const user=await UserModel.findOne({where:{id},relations:["credentials","appointments"]})
+        return user;
+    } catch (error) {
+        throw new Error("User not found");
     }
 };
 
-export const createUserService=async(newUser:UserDto,credentials:credentialsDto):Promise<User>=>{
-    const {name,email,birthDate,dni}=newUser
-    const {username,password}=credentials
+export const createUserService=async(newUser:UserDto):Promise<User>=>{
+try {
+    const newCredential=await createCredentials(newUser.username,newUser.password)
+    const userCreated= await UserModel.save({
+            name:newUser.name,
+            email:newUser.email,
+            birthDate:newUser.birthDate,
+            dni:newUser.dni,
+            Credentials:newCredential
+        })
+        return userCreated;
+    } catch (error) {
+        throw new Error("Error creating user")
+    }
 
-    const newCredential=await createCredentials(username,password)
-    const userCreated=UserModel.create({
-            name,
-            email,
-            birthDate:birthDate,
-            dni:dni,
-            credentials:{id:newCredential}}
-        )
-        await UserModel.save(userCreated);
-        return userCreated;//aca estaba retornando newUserEntity
-    } 
+    
+    
+}
+    
     
 
 // export const deleteUserService=async(id:number):Promise<void>=>{

@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import  IAppointment, { Status } from "../interfaces/IAppointments";
-import { createAppointment, getAllAppointments } from "../services/appointmentsService";
+import {  createAppointmentService, getAllAppointments } from "../services/appointmentsService";
+import {getAppointmentByIdService} from "../services/appointmentsService";
+import { appointments } from "../bd/appointments";
+import AppointmentDto from "../dto/AppointmentDto";
 
-let appointments: IAppointment[] = [];
 
 export const getAppointments = async (req: Request, res: Response):Promise<void> => {
     const appointments=await getAllAppointments()
@@ -10,25 +12,25 @@ export const getAppointments = async (req: Request, res: Response):Promise<void>
 };
 
 export const getAppointmentById = async (req: Request, res: Response) => {
-    const appointmentId: number = parseInt(req.params.id);
-    const appointment = appointments.find(appointment => appointment.id === appointmentId);
-    if (appointment) {
-        res.status(200).json(appointment);
-    } else {
-        res.status(404).json({ message: "Appointment not found" });
+    try {
+        const {id}=req.params;
+        const appointment =await getAppointmentByIdService(Number(id))
+        res.status(201).json(appointment);
+    } catch (error) {
+        res.status(500).json({ message: "Internal Server Error" });
     }
 };
 //CRONOGRAMA
-export const scheduleAppointment = async (req: Request, res: Response): Promise<void> => {
+export const scheduleAppointment = async (req: Request, res: Response) => {
     try {
-        const { date, time,type,status, userId } = req.body;
-        const newAppointment = await createAppointment({ date, time, type,status}, parseInt(userId)); //parseInt(userId); 
-        if (newAppointment) {
-            res.status(201).json(newAppointment);
-        } else {
-            res.status(400).json({ message: "Error creating appointment" });
-        }
+        console.log("hasta aca va",req.body);
+        const newAppointment : AppointmentDto=req.body;
+        console.log("datos de la cita",newAppointment)
+        const appointment =await createAppointmentService(newAppointment)
+        res.status(201).json({message:"Turno creado existosamente", appointment});
+        
     } catch (error) {
+        console.log("error en el controlador de turnos",error)
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
@@ -38,11 +40,11 @@ export const cancelAppointment = async (req: Request, res: Response) => {
     try {
         const appointmentId: number = parseInt(req.params.id);
         const appointmentIndex = appointments.findIndex(appointment => appointment.id === appointmentId);
-        if (appointmentIndex !== -1) {
-            appointments[appointmentIndex].status = Status.CANCELLED;
-            res.status(200).json({ message: "Appointment cancelled successfully" });
+        if (appointmentIndex === -1) {
+          res.status(404).json({ message: "Appointment not found" });
         } else {
-            res.status(404).json({ message: "Appointment not found" });
+          appointments.splice(appointmentIndex, 1);
+          res.status(200).json({ message: "Appointment canceled successfully" });
         }
     } catch (error) {
         res.status(500).json({ message: "Internal Server Error" });

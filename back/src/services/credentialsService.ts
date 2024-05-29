@@ -1,15 +1,21 @@
 
 
-import { CredentialsModel,UserModel } from "../config/data-source";
+import { AppDataSource, CredentialsModel,UserModel } from "../config/data-source";
 import { Credentials } from "../entities/Credentials";
 import { User } from "../entities/User";
 import ICredential from "../interfaces/ICredential";
 let id=1
 let credentials:ICredential[]=[];
-export const createCredentials=async(username:string,password:string):Promise<number>=>{
-   const newCredentials:Credentials=CredentialsModel.create({username,password})
-await CredentialsModel.save(newCredentials);
-return newCredentials.id;
+export const createCredentials=async(username:string,password:string):Promise<number|undefined>=>{
+    try {
+        const newCredential=await AppDataSource.manager.save(Credentials,{username,password})                      
+        return newCredential.id
+        
+    } catch (error) {
+        throw new Error("Error creating credentials")
+    }
+
+
 }
 
 export const validateCredentials=async(username:string,password:string):Promise<User | null>=>{

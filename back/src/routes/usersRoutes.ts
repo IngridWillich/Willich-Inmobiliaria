@@ -3,7 +3,7 @@ import { getUsers,getUserById,registerUser,loginUser} from "../controllers/users
  import { ValidateLogin, ValidateRegistration } from "../middlewares/middlewares";
 
 const UserRouter:Router=Router();
-console.log("hola")
+
 UserRouter.get("/",getUsers);
 UserRouter.get("/:id",getUserById);
 
