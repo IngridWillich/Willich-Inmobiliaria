@@ -117,11 +117,3 @@ export const createAppointmentService = async (appointmentData: AppointmentDto) 
 
 
 
-// export const cancelAppointment = async(id: number) => {
-//     const appointment = await getAppointmentByIdService(id);///////////
-//     if (appointment) {
-//         appointment="cancelled";//si existe lo cancela
-//         await AppointmentModel.save(appointment)
-//         return appointment;
-//     }
-//     } 

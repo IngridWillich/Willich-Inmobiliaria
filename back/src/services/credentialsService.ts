@@ -18,15 +18,15 @@ export const createCredentials=async(username:string,password:string):Promise<nu
 
 }
 
-export const validateCredentials=async(username:string,password:string):Promise<User | null>=>{
+export const validateCredentials=async(username:string,password:string):Promise<ICredential>=>{
     const foundCredential = await CredentialsModel.findOne({where:{username,password}})
        
 if (!foundCredential) {
-    throw new Error ("Not found")
-} else {
-    const user = await UserModel.findOne({ where: { id: foundCredential.id } });
-    console.log(user)
-    return user;
+    throw new Error ("Credencial no hallada")
+} return {
+   id:foundCredential.id,
+   username:foundCredential.username,
+   password:foundCredential.password
 }
 
 }

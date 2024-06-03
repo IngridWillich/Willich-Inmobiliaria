@@ -7,8 +7,12 @@ import AppointmentDto from "../dto/AppointmentDto";
 
 
 export const getAppointments = async (req: Request, res: Response):Promise<void> => {
-    const appointments=await getAllAppointments()
+   try {
+     const appointments=await getAllAppointments()
     res.status(200).json(appointments);
+   } catch (error) {
+    res.status(404).json({ message: "El turno no existe" });
+   }
 };
 
 export const getAppointmentById = async (req: Request, res: Response) => {
@@ -17,22 +21,26 @@ export const getAppointmentById = async (req: Request, res: Response) => {
         const appointment =await getAppointmentByIdService(Number(id))
         res.status(201).json(appointment);
     } catch (error) {
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: "El turno no existe" });
     }
 };
 //CRONOGRAMA
 export const scheduleAppointment = async (req: Request, res: Response) => {
     try {
-        console.log("hasta aca va",req.body);
+        console.log("Solicitud recibida para programar una cita",req.body);
         const newAppointment : AppointmentDto=req.body;
-        console.log("datos de la cita",newAppointment)
-        const appointment =await createAppointmentService(newAppointment)
-        res.status(201).json({message:"Turno creado existosamente", appointment});
-        
+        if (!newAppointment.userId || !newAppointment.date || !newAppointment.time || !newAppointment.type) {
+            throw new Error("Datos de cita incompletos");
+        }
+
+        const appointment = await createAppointmentService(newAppointment);
+
+        res.status(201).json({ message: "Turno creado exitosamente", appointment });
     } catch (error) {
-        console.log("error en el controlador de turnos",error)
-        res.status(500).json({ message: "Internal Server Error" });
+        console.error("Error en el controlador de turnos");
+        res.status(400).json({ message: "Error al crear el turno" });
     }
+   
 };
 
 
@@ -41,13 +49,13 @@ export const cancelAppointment = async (req: Request, res: Response) => {
         const appointmentId: number = parseInt(req.params.id);
         const appointmentIndex = appointments.findIndex(appointment => appointment.id === appointmentId);
         if (appointmentIndex === -1) {
-          res.status(404).json({ message: "Appointment not found" });
+          res.status(404).json({ message: "El turno no existe" });
         } else {
           appointments.splice(appointmentIndex, 1);
-          res.status(200).json({ message: "Appointment canceled successfully" });
+          res.status(200).json({ message: "Turno cancelado correctamente" });
         }
     } catch (error) {
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(404).json({ message: "Error" });
     }
 };
 

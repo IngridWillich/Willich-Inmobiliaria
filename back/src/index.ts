@@ -22,12 +22,12 @@
 
 // // Inicializar la aplicación
 import express, { Request, Response } from 'express';
-import dotenv from 'dotenv';
+
 import cors from 'cors';
 import morgan from 'morgan';
 import { AppDataSource } from './config/data-source';
 import router from './routes/indexRoutes';
- dotenv.config();
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -39,10 +39,6 @@ app.use(morgan('dev'));
 
 // Middleware para analizar el cuerpo de las solicitudes en formato JSON
 app.use(express.json());
-
-// app.get("/users", (req: Request, res: Response) => {
-//     res.status(200).send("funciona")
-// })
 
 app.use(router);
 // Iniciar el servidor

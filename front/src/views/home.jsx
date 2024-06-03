@@ -17,9 +17,6 @@ const Home = () => {
                         <img src="https://www.bullano.com.ar/files/02-2024/ad10719/1707403124018.jpg" className="d-block w-100" alt="Third slide" />
                     </div>
                     <div className="carousel-item">
-                        <img src="https://static1.sosiva451.com/16433141/0c74f0d8-0286-4cba-b9a6-4c0238848e5f_u_large.jpg" className="d-block w-100" alt="Fourth slide" />
-                    </div>
-                    <div className="carousel-item">
                         <img src="https://www.bullano.com.ar/files/02-2024/ad10719/1707403124018.jpg" className="d-block w-100" alt="Sixth slide" />
                     </div>
                 </div>
