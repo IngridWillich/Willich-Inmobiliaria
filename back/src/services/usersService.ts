@@ -15,22 +15,29 @@ let users: IUser[]=[{
     credentialId:1,
     }]  
 let id:number=1;
-export const getUsersService = async (): Promise<User[]> => {
-    // const users:User[]=await UserModel.find({relations:["appointments"]})
-    return await UserModel.find()
+export const getUsersService = async (): Promise<User[] > => {
+     const allUsers:User[]=await UserModel.find({relations:["appointments"]})
+    return allUsers
 }
 
 // } 
-export const getUserByIdService = async(id: number):Promise<User|null> => {
+export const getUserByIdService = async(id: number):Promise<User | null> => {
     try {
-        const user=await UserModel.findOne({where:{id},relations:["credentials","appointments"]})
+        const user:User|null=await UserModel.findOne({where:{id},relations:["appointments"]})
         return user;
     } catch (error) {
         throw new Error("User not found");
     }
 };
 
-export const createUserService=async(newUser:UserDto):Promise<User>=>{
+export const findUserByCredentialId=async(credentialId:number)=>{
+    const user:User|null=await UserModel.findOneBy({
+        credentials:{id:credentialId}})
+   if(!user)throw new Error("Usuario no encontrado");
+
+    return user;
+}
+export const createUserService=async(newUser:UserDto)=>{
 try {
     const newCredential=await createCredentials(newUser.username,newUser.password)
     const userCreated= await UserModel.save({
@@ -40,7 +47,7 @@ try {
             dni:newUser.dni,
             Credentials:newCredential
         })
-        return userCreated;
+        return "Usuario creado";
     } catch (error) {
         throw new Error("Error creating user")
     }
@@ -48,7 +55,6 @@ try {
     
     
 }
-    
     
 
 // export const deleteUserService=async(id:number):Promise<void>=>{

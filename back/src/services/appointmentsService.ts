@@ -3,11 +3,13 @@ import IAppointment from "../interfaces/IAppointments";
 import AppointmentDto from "../dto/AppointmentDto";
 import TurnType from "../entities/Appointment";
 import { Appointment } from "../entities/Appointment";
+import IscheduleAppointmentDto from "../interfaces/ISchedule";
+import { User } from "../entities/User";
 
 let appointments: IAppointment[] = [];
 let id=1;
 export const getAllAppointments = async () : Promise <Appointment[]>=>{
-    const allAppointments = await AppointmentModel.find();
+    const allAppointments:Appointment[] = await AppointmentModel.find();
     return allAppointments;
 }
 export const getAppointmentByIdService=async(appointmentId:number):Promise<Appointment>=>{///////
@@ -109,6 +111,18 @@ export const createAppointmentService = async (appointmentData: AppointmentDto) 
     } catch (error) {
         throw new Error("Error al crear el turno");
     }
+};
+
+export const scheduleAppointmentService = async (scheduleTurnDto:IscheduleAppointmentDto):Promise<Appointment>=> {
+    const newAppointment:Appointment=AppointmentModel.create(scheduleTurnDto);
+    await AppointmentModel.save(newAppointment);
+    const user: User|null=await UserModel.findOneBy({
+        id:scheduleTurnDto.userId
+    });
+    if(!user) throw new Error("Usuario no encontrado");
+    newAppointment.user=user;
+    await AppointmentModel.save(newAppointment);
+    return newAppointment;
 };
 ///////////////////////////////////////////////////////////////////////////////////
 

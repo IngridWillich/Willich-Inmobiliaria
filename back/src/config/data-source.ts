@@ -7,12 +7,12 @@ import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USERNAME } from "./envs";
 export const AppDataSource = new DataSource({
     type: "postgres",
     host: DB_HOST,
-    port: Number(DB_PORT),
+    port: Number(DB_PORT),//porque todo lo qe traemos del env es en string, por lo que tenemos que convertirlo
     username: DB_USERNAME,
     password: DB_PASSWORD,
     database: DB_NAME,
-    //dropSchema: true,
-    synchronize: true,
+    //dropSchema: true,//
+    synchronize: true,//cuando se termina se pasan a false
     logging: ["error"],
     entities: [User,Credentials, Appointment],
     subscribers: [],

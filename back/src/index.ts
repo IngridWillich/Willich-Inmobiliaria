@@ -22,7 +22,7 @@
 
 // // Inicializar la aplicación
 import express, { Request, Response } from 'express';
-
+import reflect from 'reflect-metadata';
 import cors from 'cors';
 import morgan from 'morgan';
 import { AppDataSource } from './config/data-source';

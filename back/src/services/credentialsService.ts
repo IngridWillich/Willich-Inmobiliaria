@@ -22,7 +22,7 @@ export const validateCredentials=async(username:string,password:string):Promise<
     const foundCredential = await CredentialsModel.findOne({where:{username,password}})
        
 if (!foundCredential) {
-    throw new Error ("Credencial no hallada")
+    throw new Error ("Credenciales incorrectas")
 } return {
    id:foundCredential.id,
    username:foundCredential.username,

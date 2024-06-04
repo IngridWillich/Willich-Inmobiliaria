@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import IUser from "../interfaces/IUsers";
-import { createUserService,  getUserByIdService,  getUsersService } from "../services/usersService";
+import { createUserService,  findUserByCredentialId,  getUserByIdService,  getUsersService } from "../services/usersService";
 import { validateCredentials } from "../services/credentialsService";
 import { User } from "../entities/User";
 import UserDto from "../dto/UserDto";
 import { getAppointmentByIdService } from "../services/appointmentsService";
 import ICredential from "../interfaces/ICredential";
+import { Credentials } from "../entities/Credentials";
 let users:IUser[]=[];
 export const getUsers = async (req: Request, res: Response):Promise<void>=>{
     try {
@@ -26,9 +27,16 @@ export const getUserById = async (req: Request, res: Response) => {
 };
 export const registerUser=async(req:Request,res:Response)=>{
    try {
-    const newUser:UserDto=req.body
-    const user:User = await createUserService(newUser);
-    res.status(201).json({ message: "El usuario ha sido creado con éxito", user })
+    const {name,email,birthDate,dni,username,password}=req.body
+    const newUser = await createUserService({
+      name,
+      email,
+      birthDate,
+      dni,
+      username,
+      password
+    });
+    res.status(201).json({ message: "El usuario ha sido creado con éxito", user: newUser })
    } catch (error) {
     res.status(400).json({ message: "Internal Server Error" })
    }
@@ -38,15 +46,27 @@ export const registerUser=async(req:Request,res:Response)=>{
 /////////////////////////////////
 export const loginUser = async (req: Request, res: Response) => {
   try {
-      const { username, password } = req.body;
-      const credential: ICredential = await validateCredentials(username, password);
-      const user = await getUserByIdService(credential.id);
-      res.status(200).json({
-          loggin: true,
-          user
-      });
-  } catch (error) {
-      res.status(404).send("Error");
-  }
+    const { username, password } = req.body;
+    const credential: Credentials = await validateCredentials(username, password);
+    const user:User|null = await getUserByIdService(credential.id);// debrria ser con findUserByCredentialId
+    res.status(200).json({
+        loggin: true,
+        user
+    });
+} catch (error:any) {
+    res.status(404).send(error.message);
+}
+
+//   try {
+//       const { username, password } = req.body;
+//       const credential: Credentials = await validateCredentials(username, password);
+      // const user: User|null = await findUserByCredentialId(credential.id);
+//       res.status(200).json({
+//           loggin: true,
+//           user
+//       });
+//   } catch (error:any) {
+//       res.status(404).json({ message: error.message });
+//   }
   
 }

@@ -1,14 +1,15 @@
 import { Request, Response } from "express";
 import  IAppointment, { Status } from "../interfaces/IAppointments";
-import {  createAppointmentService, getAllAppointments } from "../services/appointmentsService";
+import {  createAppointmentService, getAllAppointments, scheduleAppointmentService } from "../services/appointmentsService";
 import {getAppointmentByIdService} from "../services/appointmentsService";
 import { appointments } from "../bd/appointments";
 import AppointmentDto from "../dto/AppointmentDto";
+import { Appointment } from "../entities/Appointment";
 
 
 export const getAppointments = async (req: Request, res: Response):Promise<void> => {
    try {
-     const appointments=await getAllAppointments()
+     const appointments:Appointment[]=await getAllAppointments()
     res.status(200).json(appointments);
    } catch (error) {
     res.status(404).json({ message: "El turno no existe" });
@@ -26,16 +27,18 @@ export const getAppointmentById = async (req: Request, res: Response) => {
 };
 //CRONOGRAMA
 export const scheduleAppointment = async (req: Request, res: Response) => {
+    const {date,time,userId,type}=req.body;
     try {
         console.log("Solicitud recibida para programar una cita",req.body);
-        const newAppointment : AppointmentDto=req.body;
-        if (!newAppointment.userId || !newAppointment.date || !newAppointment.time || !newAppointment.type) {
-            throw new Error("Datos de cita incompletos");
-        }
+        const newAppointment : Appointment=await scheduleAppointmentService({
+            date,
+            time,
+            userId,
+            type
+        })
+         
 
-        const appointment = await createAppointmentService(newAppointment);
-
-        res.status(201).json({ message: "Turno creado exitosamente", appointment });
+        res.status(201).json(newAppointment); ;
     } catch (error) {
         console.error("Error en el controlador de turnos");
         res.status(400).json({ message: "Error al crear el turno" });
