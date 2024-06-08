@@ -1,19 +1,27 @@
     .navbar_item {
     color: #f6efef;
-    margin-right: auto;
-    margin-left: 20px;
+    text-decoration: none;
+    margin-left: 14px;
+   
     transition: color 0.3s ease-in-out;
   align-items: center;
     
     
   }
-  
+  .navbarItems {
+    display: flex; /* Hace que los elementos se ubiquen horizontalmente */
+    align-items: center; /* Centra verticalmente los elementos */
+    flex-wrap: nowrap;
+   
+    
+  }
+
   .navbar_item:hover {
     color:#ff99cc;
   }
   .navbarContainer {
     background-color: #040404;
-    padding: 0px;
+    padding: 0;
     position: fixed;
     top: 0;
     left: 0;
@@ -21,12 +29,13 @@
     height: 5em;
     z-index: 1000;
     display: flex;
+    align-items: center;
    
   }
   
   .navbar {
-    width: fit-content; /* Establece la anchura de la barra de navegación para que coincida con el contenido */
-    margin: 0 auto; /* Centra horizontalmente la barra de navegación */
+    width:100%; /*fit-content; /* Establece la anchura de la barra de navegación para que coincida con el contenido */
+    /*margin: 0 auto; /* Centra horizontalmente la barra de navegación */
     display: flex;
     justify-content: space-between;
     align-items: center;

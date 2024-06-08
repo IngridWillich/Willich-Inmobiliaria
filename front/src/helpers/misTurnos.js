@@ -9,14 +9,14 @@ const misTurnos=[
     {
         id: 2,
         fecha: "2024-05-23",
-        hora: "10:00",
+        hora: "12:00",
         tipo: "Visita de propiedad",
         estado: "Active"
     },
     {
         id: 3,
         fecha: "2024-05-23",
-        hora: "10:00",
+        hora: "15:00",
         tipo: "Visita de propiedad",
         estado: "Active"
     },

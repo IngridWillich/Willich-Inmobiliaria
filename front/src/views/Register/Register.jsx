@@ -13,15 +13,7 @@ const Register = () => {
         confirmPassword: ""
     });
 
-    const [errors, setErrors] = useState({
-        name: "name is required",
-        email: "email is required",
-        birthdate: "birthdate is required",
-        dni: "dni is required",
-        username: "username is required",
-        password: "password is required",
-        confirmPassword: "confirmPassword is required"
-    });
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         // Valida el formulario cuando formDta cambie

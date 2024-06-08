@@ -4,11 +4,13 @@ import Turno from "../../components/Turno/Turno";
 import axios from "axios";
 import misTurnos from "../../helpers/misTurnos";
 
+
+const GETAPPOINTMENTSURL="http://localhost:3000/appointments"
 const MisTurnos = () => {
     const [turnos, setTurnos] = useState([]);
 
     useEffect(() => {
-        axios.get("http://localhost:3000/appointments")
+        axios.get(GETAPPOINTMENTSURL)
             .then((res) => {
                 setTurnos(res.data);
                 console.log(res.data)
