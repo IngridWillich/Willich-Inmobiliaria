@@ -72,7 +72,7 @@ const Register = () => {
                     <input type="text" name="confirmPassword" value={formDta.confirmPassword} onChange={handleInputChange} placeholder="********" />
                     {errors.confirmPassword && <p className={styles.error}>{errors.confirmPassword}</p>}
                 </div>
-                <button type="submit" className={styles.button}>Registrar</button>
+                <button type="submit" disabled={Object.keys(formDta).some(e=> !formDta[e])} className={styles.button}>Registrar</button>
                 
             </form>
         </div>

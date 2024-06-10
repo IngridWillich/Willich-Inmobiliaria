@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import styles from "./Login.module.css";
 import {validateUser} from "../../helpers/validateLogin";
-
+import { useNavigate } from "react-router-dom";
  const Login = () => {
+    const Navigate = useNavigate();
     const [formDta, setFormularioDta] = useState({
         email:"",
         password:""
@@ -29,7 +30,9 @@ import {validateUser} from "../../helpers/validateLogin";
     const handleOnSubmit = (event) => {
         event.preventDefault();
         alert(`email: ${formDta.email} password: ${formDta.password}`);
+       Navigate("/Inicio");
     };
+
 
 
 

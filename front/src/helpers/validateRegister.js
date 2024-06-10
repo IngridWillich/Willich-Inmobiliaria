@@ -35,7 +35,7 @@ export const validate = (input) => {
     if (!input.password) errors.password = "Contraseña es requerida"
     else {
         if (!passwordRegExp.test(input.password)) errors.password = "La contraseña debe tener al menos 8 caracteres, una mayuscula, una minuscula y un numero"
-    }
+    }if(input.confirmPassword !== input.password) errors.confirmPassword = "Las contraseñas no coinciden"
 
     return errors;
 
