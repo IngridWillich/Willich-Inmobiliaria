@@ -4,7 +4,7 @@ import axios from "axios";
 import styles from "./Login.module.css";
 import {validateUser} from "../../helpers/validateLogin";
 import { useNavigate } from "react-router-dom";
-
+import { setUserData } from "../../redux/reducers";
  const Login = () => {
     const dispatch = useDispatch();
     const Navigate = useNavigate();
@@ -41,6 +41,7 @@ const navigate=useNavigate();
         .post ("http://localhost:3001/login", formData)
         .then((response) => {
             console.log(response.data);
+           dispatch(setUserData(response.data));
            
             alert("Usuario Logueado");
             navigate("/Inicio");
