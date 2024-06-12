@@ -29,6 +29,8 @@ const Home = () => {
                     <span className="visually-hidden">Next</span>
                 </button>
             </div>
+
+            <h1 className="texto">Propiedades destacadas</h1>
         </div>
     )
 }

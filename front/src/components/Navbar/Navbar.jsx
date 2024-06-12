@@ -1,8 +1,9 @@
 import styles from './Navbar.module.css';
 import Logo from '../../assets/Logo.png'
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 const Navbar=({isAuthenticated})=>{
-
+const {pathname}=useLocation();
     return(
         <div className={styles.navbarContainer}>
             
@@ -14,7 +15,7 @@ const Navbar=({isAuthenticated})=>{
                 <Link to="/Venta"><span className={styles.navbar_item}>Venta</span></Link>
                 <Link to="/Tasaciones"><span className={styles.navbar_item}>Tasaciones</span></Link>
                 <Link to="/SobreNosotros"><span className={styles.navbar_item}>Sobre nosotros</span></Link>
-                <Link to="/Citas"><span className={styles.navbar_item}>Agenda tu cita</span></Link>
+                {pathname !== "/login" && pathname !== "/register" ?(<Link to="/Citas"><span className={styles.navbar_item}>Agenda tu cita</span></Link>):null}
                <Link to="/Contacto"><span className={styles.navbar_item}>Contacto</span></Link>
                {isAuthenticated ? 
     <Link to="/login"><span className={styles.navbar_item}>Iniciar sesión</span></Link> : 

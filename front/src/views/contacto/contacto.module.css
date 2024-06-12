@@ -1,0 +1,21 @@
+.texto {
+    margin-top: 60px;
+    text-align: left; 
+    display: block;
+    font-size: 35px;
+}
+
+.p{
+    text-align: left;
+    font-size: 30px;
+}
+.p2{
+    text-align: left;
+    font-size: 20px;
+}
+.link{
+    color:black;
+text-align: left;
+margin-left: 5rem;
+
+}

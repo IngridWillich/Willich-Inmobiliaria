@@ -8,6 +8,7 @@ import MisTurnos from './views/MisTurnos/MisTurnos';
 import Register from './views/Register/Register';
 import Login from './views/Login/Login';
 import Contacto from './views/contacto/contacto';
+import Landing from './views/landing/landing';
 
 const App = () => {
  const { pathname } =useLocation;
@@ -18,12 +19,13 @@ const [isAuthenticated, setIsAuthenticated] = useState(false);
       {pathname !== "/" && pathname !== "/404" ? <Navbar /> : null}
       <Navbar isAuthenticated={isAuthenticated} />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Landing />} />
        < Route path="/Inicio" element={<Home />}/>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/Contacto" element={<Contacto />} />
-          <Route path="*" element={<Navigate to="/404" />} />
+          <Route path="/Citas" element={<MisTurnos />} />
+          <Route path="/*" element={<Navigate to="/404" />} />
       </Routes>
      
     </div>

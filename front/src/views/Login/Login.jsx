@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
+import {useDispatch} from "react-redux";
+import axios from "axios";
 import styles from "./Login.module.css";
 import {validateUser} from "../../helpers/validateLogin";
 import { useNavigate } from "react-router-dom";
+
  const Login = () => {
+    const dispatch = useDispatch();
     const Navigate = useNavigate();
     const [formDta, setFormularioDta] = useState({
         email:"",
@@ -16,7 +20,7 @@ import { useNavigate } from "react-router-dom";
         setErrors(validateUser(formDta));
     }, [formDta]);
 
-
+const navigate=useNavigate();
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setFormularioDta(
@@ -26,12 +30,27 @@ import { useNavigate } from "react-router-dom";
         })
     );
     };
-
+    
     const handleOnSubmit = (event) => {
         event.preventDefault();
-        alert(`email: ${formDta.email} password: ${formDta.password}`);
-       Navigate("/Inicio");
+        const formData={
+            email:formDta.email,
+            password:formDta.password
+        };
+        axios 
+        .post ("http://localhost:3001/login", formData)
+        .then((response) => {
+            console.log(response.data);
+           
+            alert("Usuario Logueado");
+            navigate("/Inicio");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     };
+
+    
 
 
 
