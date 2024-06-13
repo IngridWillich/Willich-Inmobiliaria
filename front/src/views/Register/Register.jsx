@@ -88,6 +88,7 @@ import { useDispatch } from "react-redux";
 import { setUserData } from "../../redux/reducers";
 import { validate } from "../../helpers/validateRegister";
 import styles from "./Register.module.css";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
     const [formDta, setFormularioDta] = useState({
@@ -102,6 +103,8 @@ const Register = () => {
 
     const [errors, setErrors] = useState({});
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         setErrors(validate(formDta));
@@ -133,6 +136,7 @@ const Register = () => {
             const response = await axios.post("http://localhost:3000/users/register", formDataToSend);
             dispatch(setUserData(response.data.user));
             alert("Usuario registrado con éxito");
+            navigate("/Login"); // Redirigir a la ruta correspondiente cuando el usuario se registre correctamenteavigate("/Login");
         } catch (error) {
             console.log(error);
         }

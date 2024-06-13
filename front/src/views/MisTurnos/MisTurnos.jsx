@@ -16,43 +16,37 @@ const MisTurnos = () => {
     const navigate = useNavigate();
     const actualUserId = useSelector((state) => state.actualUser.userData?.id);
     const [turnos, setTurnos] = useState([]);
-    const appointments = useSelector((state) => state.appointments);
+
+    const appointments = useSelector((state) => state.actualUser.userAppointments);
 
 
 
-// useEffect(()=>{
-//     axios.get(GETUSERBYID + actualUserId)
-//     .then(response=> response.data)
-//     .then(actualUser=>{
-//         dispatch(setUserAppointments(actualUser.appointments))({
-//     })
-//     .catch()
-// })
-
-// }, [actualUserId,dispatch]);
 useEffect(() => {
+    //
+    if (actualUserId !== undefined && actualUserId !== null) {
     axios.get(GETUSERBYID + actualUserId)
         .then(response => { 
+            console.log(response.data.appointments)
+            setTurnos(response.data.appointments);
             dispatch(setUserAppointments(response.data.appointments));
         })
         .catch(error => {
             console.error('Error al obtener citas del usuario:', error);
         });
+    }
 }, [actualUserId, dispatch]);
 
 const appointment=useSelector(state=>state.actualUser.UserAppointments)
 
 
-// const loggin=useSelector(state=>state.actualUser.userData.loggin)
-// useEffect(() => {
-//     !loggin && navigate('/Inicio');
-// }, [loggin, navigate]);
-//esto hicimos con el profe
 
-const handleAppointmentCancel = () => {
+
+const handleAppointmentCancel = (turnId) => {
+    console.log(turnId,"turnId")
     axios
-        .put(POSTCANCELURL + appointment.id)
-        .then(response => response.data)
+        .put(`http://localhost:3000/appointments/cancel/${turnId}`)
+        .then(response =>{response.data} )
+
         .then((data) => {
             //* actualizar turnos desde el back
             axios.get(GETUSERBYID + actualUserId)
@@ -69,17 +63,6 @@ const handleAppointmentCancel = () => {
 
 
 
-//     useEffect(() => {
-    // axios.get(`${GETAPPOINTMENTSURL}?userId=${userId}`)
-    //             .then((response) => {
-        //                 dispatch(setAppointments(response.data));
-        //                 setTurnos(misTurnos(response.data, userId));
-        //             })
-        //             .catch((error) => {
-            //                 console.error('Error al obtener las citas:', error);
-            //             });
-            //         }
-            
             
             return (
             <div>
@@ -94,7 +77,7 @@ const handleAppointmentCancel = () => {
                         time={turno.time}
                         type={turno.type}
                         status={turno.status}
-                         onCancel={() => handleAppointmentCancel(turno.id)}
+                         handleAppointmentCancel={handleAppointmentCancel}
                     />
                 ))}
             </div>

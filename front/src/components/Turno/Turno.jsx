@@ -1,6 +1,8 @@
 import misTurnos from "../../helpers/misTurnos";
 import styles from "../Turno/Turno.module.css"
-const Turno=({id,date,time,type,status})=>{
+
+const Turno=({id,date,time,type,status, handleAppointmentCancel})=>{
+    
     const dateObj = new Date(date);
 
   const formatDate = `${dateObj.getDate()}/${dateObj.getMonth() + 1}/${dateObj.getFullYear()}`;
@@ -24,7 +26,7 @@ const Turno=({id,date,time,type,status})=>{
            <h4 className={styles.turno_item}>Hora:{time}</h4>
            <h4 className={styles.turno_item}>Motivo: {type} </h4>
            <h4 className={styles.turno_item}>Estado:{status}</h4>
-           <button className={styles.button} disabled={ status == "cancelled"}>Cancelar Cita</button>
+           <button onClick={handleClick} className={styles.button} disabled={ status == "cancelled"}>Cancelar Cita</button>
 
 
         </div>
