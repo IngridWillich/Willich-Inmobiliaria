@@ -9,15 +9,15 @@ import Register from './views/Register/Register';
 import Login from './views/Login/Login';
 import Contacto from './views/contacto/contacto';
 import Landing from './views/landing/landing';
+import AppointmentForm from './views/turnos/formTurnos';
 
 const App = () => {
- const { pathname } =useLocation;
+ const { pathname } =useLocation();
 const [isAuthenticated, setIsAuthenticated] = useState(false);
   return (
     <div>
       
-      {pathname !== "/" && pathname !== "/404" ? <Navbar /> : null}
-      <Navbar isAuthenticated={isAuthenticated} />
+      {pathname !== "/" && pathname !== "/404" ? <Navbar isAuthenticated={isAuthenticated} /> : null}
       <Routes>
         <Route path="/" element={<Landing />} />
        < Route path="/Inicio" element={<Home />}/>
@@ -25,6 +25,7 @@ const [isAuthenticated, setIsAuthenticated] = useState(false);
           <Route path="/login" element={<Login />} />
           <Route path="/Contacto" element={<Contacto />} />
           <Route path="/Citas" element={<MisTurnos />} />
+          <Route path="/Agenda-tu-cita" element={<AppointmentForm />} />
           <Route path="/*" element={<Navigate to="/404" />} />
       </Routes>
      

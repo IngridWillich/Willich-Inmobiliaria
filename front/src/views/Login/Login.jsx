@@ -8,54 +8,57 @@ import { setUserData } from "../../redux/reducers";
  const Login = () => {
     const dispatch = useDispatch();
     const Navigate = useNavigate();
-    const [formDta, setFormularioDta] = useState({
+    const [formDta,setFormDta] = useState({
         email:"",
         password:""
     });
 
     const [errors, setErrors] = useState({});
+ 
+
 
     useEffect(() => {
         // Valida el formulario cuando formDta cambie
         setErrors(validateUser(formDta));
     }, [formDta]);
 
-const navigate=useNavigate();
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        setFormularioDta(
-            validateUser({
-            ...formDta,
-            [name]: value
-        })
-    );
+        formDta[name]=value;
+        console.log(JSON.stringify(formDta))
+        const newFormDta={...formDta};
+        setFormDta(newFormDta);
+        
+        
     };
     
     const handleOnSubmit = (event) => {
-        event.preventDefault();
+        // event.preventDefault();
+        let validacion = validateUser(formDta);
+        if(Object.keys(validacion).lenght > 0){
+           setErrors(validacion);    
+           return                                                   
+        }
+        console.log(JSON.stringify(validacion))
         const formData={
             email:formDta.email,
             password:formDta.password
         };
-        axios 
-        .post ("http://localhost:3001/login", formData)
-        .then((response) => {
-            console.log(response.data);
-           dispatch(setUserData(response.data));
-           
-            alert("Usuario Logueado");
-            navigate("/Inicio");
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    };
+        axios .post("http://localhost:3001/login", formData)
+        .then(({ data }) => {
+        dispatch(setUserData(data));
+        alert("Usuario Logueado");
+        setUser(initialState);
+        Navigate("/Inicio");
+    })
+    .catch((error) => {
+        console.log(error);
+    });
 
+    };
     
 
-
-
-
+    
     return(
         <div className={styles.container}>
             <h2 className={styles.title}>Iniciar Sesión</h2>

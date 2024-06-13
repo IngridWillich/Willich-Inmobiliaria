@@ -4,7 +4,20 @@ const Turno=({id,date,time,type,status})=>{
     const dateObj = new Date(date);
 
   const formatDate = `${dateObj.getDate()}/${dateObj.getMonth() + 1}/${dateObj.getFullYear()}`;
-    return(
+    
+  const handleClick=()=>{
+    if(
+        window.confirm(
+            `Desea cancelar esta cita ${formatDate} a las ${time}?`
+        )
+     ) {
+        handleAppointmentCancel(id);
+    }
+  };
+  
+  
+  
+  return(
         <div className={styles.turnoContainer} >
             <h4 className={styles.turno_item}>ID:{id} </h4>
            <h4 className={styles.turno_item}>Fecha:{formatDate}</h4>
