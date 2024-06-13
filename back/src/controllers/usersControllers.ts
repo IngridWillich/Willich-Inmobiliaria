@@ -44,29 +44,33 @@ export const registerUser=async(req:Request,res:Response)=>{
 //aca tambien
 };
 /////////////////////////////////
+// export const loginUser = async (req: Request, res: Response) => {
+//   try {
+//     const { username, password } = req.body;
+//     const credential: Credentials = await validateCredentials(username, password);
+//     const user:User|null = await getUserByIdService(credential.id);// debrria ser con findUserByCredentialId
+//     res.status(200).json({
+//         loggin: true,
+//         user
+//     });
+// } catch (error:any) {
+//     res.status(404).send(error.message);
+// }
 export const loginUser = async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
+    console.log("Datos recibidos para login:", { username, password }); // Log de datos recibidos
     const credential: Credentials = await validateCredentials(username, password);
-    const user:User|null = await getUserByIdService(credential.id);// debrria ser con findUserByCredentialId
+    const user: User | null = await getUserByIdService(credential.id); // debería ser con findUserByCredentialId
     res.status(200).json({
-        loggin: true,
-        user
+      loggin: true,
+      user
     });
-} catch (error:any) {
+  } catch (error: any) {
+    console.error("Error en loginUser:", error.message); // Log de error detallado
     res.status(404).send(error.message);
-}
+  }
+};
 
-//   try {
-//       const { username, password } = req.body;
-//       const credential: Credentials = await validateCredentials(username, password);
-      // const user: User|null = await findUserByCredentialId(credential.id);
-//       res.status(200).json({
-//           loggin: true,
-//           user
-//       });
-//   } catch (error:any) {
-//       res.status(404).json({ message: error.message });
-//   }
   
-}
+

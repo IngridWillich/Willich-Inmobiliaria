@@ -126,7 +126,33 @@ export const scheduleAppointmentService = async (scheduleTurnDto:IscheduleAppoin
 };
 ///////////////////////////////////////////////////////////////////////////////////
 
+// export const cancelAppointmentService = async (id: number) => {
+//     // Actualiza el estado de la cita a "cancelled"
+//     const result = await AppointmentModel.update({ id }, { status: "CANCELLED" });
+  
+//     // Verifica si se realizó la actualización correctamente
+//     if (result.affected === 0) {
+//       throw new Error("Cita no encontrada");
+//     }
+  
+//     return result;
+//   };
 
+export const cancelAppointmentService = async (id: number) => {
+    try {
+        // Intenta actualizar el estado de la cita a "CANCELLED"
+        const result = await AppointmentModel.update({ id }, { status: "CANCELLED" });
+
+        // Verifica si se realizó la actualización correctamente
+        if (result.affected === 0) {
+            throw new Error("Cita no encontrada o no se pudo cancelar");
+        }
+
+        return result;
+    } catch (error) {
+        throw new Error("Error al cancelar la cita");
+    }
+};
 
 
 

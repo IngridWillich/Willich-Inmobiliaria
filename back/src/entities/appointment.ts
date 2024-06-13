@@ -30,7 +30,7 @@ export class Appointment {
     type: TurnType;
 
     @Column({type: "enum", enum: Status, default: Status.ACTIVE})
-    status: Status
+    status: "ACTIVE" | "CANCELLED"
 
     @ManyToOne(() => User, user => user.appointments)
     user: User

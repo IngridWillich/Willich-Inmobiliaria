@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import  IAppointment, { Status } from "../interfaces/IAppointments";
-import {  createAppointmentService, getAllAppointments, scheduleAppointmentService } from "../services/appointmentsService";
+import {  createAppointmentService, getAllAppointments, scheduleAppointmentService, cancelAppointmentService} from "../services/appointmentsService";
 import {getAppointmentByIdService} from "../services/appointmentsService";
 import { appointments } from "../bd/appointments";
 import AppointmentDto from "../dto/AppointmentDto";
@@ -47,18 +47,46 @@ export const scheduleAppointment = async (req: Request, res: Response) => {
 };
 
 
+// export const cancelAppointment = async (req: Request, res: Response) => {
+//     try {
+//         const { id } = req.params;
+//         console.log(id)
+//         const appointmentId: number = parseInt(id);
+//         const appointmentIndex = appointments.findIndex(appointment => appointment.id === appointmentId);
+//         if (appointmentIndex === -1) {
+//           res.status(404).json({ message: "El turno no existe" });
+//         } else {
+//           appointments.splice(appointmentIndex, 1);
+//           res.status(200).json({ message: "Turno cancelado correctamente" });
+//         }
+//     } catch (error) {
+//         res.status(404).json({ message: "Error" });
+//     }
+// };
+
+
+// export const cancelAppointment = async (req: Request, res: Response) => {
+//     try {
+//       const appointmentId = Number(req.params.id);
+  
+//       // Llama a la función cancelAppointmentService con el ID de la cita y los datos de cancelación
+//       await cancelAppointmentService(appointmentId);
+  
+//       res.status(200).json({ message: "Turno cancelado exitosamente" });
+//     } catch (error) {
+//       res.status(404).json({ message: "Turno no encontrado" });
+//     }
+//   };
+
+
 export const cancelAppointment = async (req: Request, res: Response) => {
     try {
-        const appointmentId: number = parseInt(req.params.id);
-        const appointmentIndex = appointments.findIndex(appointment => appointment.id === appointmentId);
-        if (appointmentIndex === -1) {
-          res.status(404).json({ message: "El turno no existe" });
-        } else {
-          appointments.splice(appointmentIndex, 1);
-          res.status(200).json({ message: "Turno cancelado correctamente" });
-        }
+        const { id } = req.params;
+        const appointmentId: number = parseInt(id);
+        // Llama a la función del servicio para cancelar la cita
+        await cancelAppointmentService(appointmentId);
+        res.status(200).json({ message: "Turno cancelado correctamente" });
     } catch (error) {
         res.status(404).json({ message: "Error" });
     }
 };
-

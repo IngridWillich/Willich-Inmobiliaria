@@ -1,7 +1,7 @@
 import TurnType from "../entities/Appointment";
 export enum Status{
     ACTIVE = "ACTIVE",
-    CANCELED = "CANCELED"
+    CANCELED = "CANCELLED"
 }
 interface AppointmentDto {
     userId: number,
