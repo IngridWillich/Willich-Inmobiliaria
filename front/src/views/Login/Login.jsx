@@ -32,29 +32,46 @@ import { setUserData } from "../../redux/reducers";
         
     };
     
-    const handleOnSubmit = (event) => {
-        // event.preventDefault();
-        let validacion = validateUser(formDta);
-        if(Object.keys(validacion).lenght > 0){
-           setErrors(validacion);    
-           return                                                   
-        }
-        console.log(JSON.stringify(validacion))
-        const formData={
-            email:formDta.email,
-            password:formDta.password
-        };
-        axios .post("http://localhost:3001/login", formData)
-        .then(({ data }) => {
-        dispatch(setUserData(data));
-        alert("Usuario Logueado");
-        setUser(initialState);
-        Navigate("/Inicio");
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+    // const handleOnSubmit = (event) => {
+    //     event.preventDefault();
+    //     let validacion = validateUser(formDta);
+    //     if(Object.keys(validacion).length > 0){
+    //        setErrors(validacion);    
+    //        return                                                   
+    //     }
+    //     // console.log(JSON.stringify(validacion))
+    //     console.log("Datos enviados al backend:", formDta); // Agrega este console.log
+    //     const formData={
+    //         email:formDta.email,
+    //         password:formDta.password
+    //     };
+    //     axios.post("http://localhost:3000/users/login", formData)
+    //     .then(({ data }) => {
+    //     dispatch(setUserData(data));
+    //     alert("Usuario Logueado");
+    //     // setUser(initialState);
+    //     // Navigate("/Inicio");
+    // })
+    // .catch((error) => {
+    //     console.log(error);
+    // });
 
+    // };
+
+    const handleOnSubmit = async (event) => {
+        event.preventDefault();
+        const validationErrors = validateUser(formDta);
+        setErrors(validationErrors);
+        if (Object.keys(validationErrors).length === 0) {
+            try {
+                const response = await axios.post("http://localhost:3000/users/login", formDta);
+                dispatch(setUserData(response.data.user));
+                alert("Usuario Logueado");
+                Navigate("/Citas");
+            } catch (error) {
+                console.log(error);
+            }
+        }
     };
     
 

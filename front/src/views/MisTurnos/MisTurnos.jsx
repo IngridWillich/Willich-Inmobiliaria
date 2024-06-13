@@ -14,30 +14,39 @@ const POSTCANCELURL="http://localhost:3000/appointments/cancel/"
 const MisTurnos = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const actualUserId = useSelector((state) => state.actualUser.userData.userId);
+    const actualUserId = useSelector((state) => state.actualUser.userData?.id);
     const [turnos, setTurnos] = useState([]);
     const appointments = useSelector((state) => state.appointments);
 
 
 
-useEffect(()=>{
-    axios.get(GETUSERBYID + actualUserId)
-    .then(response=> response.data)
-    .then(actualUser=>{
-        dispatch(setUserAppointments(actualUser.appointments))({
-    })
-    .catch()
-})
+// useEffect(()=>{
+//     axios.get(GETUSERBYID + actualUserId)
+//     .then(response=> response.data)
+//     .then(actualUser=>{
+//         dispatch(setUserAppointments(actualUser.appointments))({
+//     })
+//     .catch()
+// })
 
-}, [actualUserId,dispatch]);
+// }, [actualUserId,dispatch]);
+useEffect(() => {
+    axios.get(GETUSERBYID + actualUserId)
+        .then(response => { 
+            dispatch(setUserAppointments(response.data.appointments));
+        })
+        .catch(error => {
+            console.error('Error al obtener citas del usuario:', error);
+        });
+}, [actualUserId, dispatch]);
 
 const appointment=useSelector(state=>state.actualUser.UserAppointments)
 
 
-const loggin=useSelector(state=>state.actualUser.userData.loggin)
-useEffect(() => {
-    !loggin && navigate('/Inicio');
-}, [loggin, navigate]);
+// const loggin=useSelector(state=>state.actualUser.userData.loggin)
+// useEffect(() => {
+//     !loggin && navigate('/Inicio');
+// }, [loggin, navigate]);
 //esto hicimos con el profe
 
 const handleAppointmentCancel = () => {
@@ -76,7 +85,8 @@ const handleAppointmentCancel = () => {
             <div>
             <h4>Estas son tus citas pendientes con Willich Inmobiliaria</h4>
             <div>
-                {Array.isArray(turnos) && turnos.map((turno,index) => (
+                {/* esto no se muestra en pantalla */}
+                {turnos.map((turno, index) => (
                     <Turno 
                         key={index}
                         id={turno.id}
@@ -84,11 +94,14 @@ const handleAppointmentCancel = () => {
                         time={turno.time}
                         type={turno.type}
                         status={turno.status}
+                         onCancel={() => handleAppointmentCancel(turno.id)}
                     />
                 ))}
             </div>
         </div>
     );
+
 }
+
 
 export default MisTurnos;
